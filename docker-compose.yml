@@ -1,0 +1,17 @@
+version: '3'
+services:
+    web:
+        build: .
+        ports:
+            - '${APP_PORT:-80}:8000'
+            - '5173:5173'
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        volumes:
+            - ./src:/var/www/html
+        working_dir: /var/www/html
+        networks:
+          - laravel
+networks:
+    laravel:
+#        external: true
