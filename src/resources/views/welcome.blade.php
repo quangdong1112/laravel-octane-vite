@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Hello Words!</h1>
+    <h1>Hello Word!</h1>
     @vite('resources/js/app.js')
 </body>
 </html>
