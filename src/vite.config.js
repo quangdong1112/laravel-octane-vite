@@ -6,7 +6,16 @@ import path from 'path'
 export default defineConfig({
     plugins: [
         vue(),
-        laravel(['resources/js/app.js',]),
+        laravel({
+            input: [
+                'resources/sass/app.scss',
+                'resources/js/app.js',
+                'resources/js/app/header.js',
+                'resources/js/app/master.js',
+                'resources/js/app/home.js',
+            ],
+            refresh: true,
+        }),
         {
             name: 'blade',
             handleHotUpdate({ file, server }) {
@@ -17,13 +26,15 @@ export default defineConfig({
                     });
                 }
             },
-        }, 
+        },
     ],
+
     resolve: {
         alias: {
-            '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
-        }
+            'vue': 'vue/dist/vue.esm-bundler.js'
+        },
     },
+
     server: {
         hmr: {
             host: 'localhost',
