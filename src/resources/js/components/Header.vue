@@ -2,6 +2,7 @@
 import {ref} from 'vue';
 import { onMounted } from "vue";
     const mostSearched = ref([]);
+    const searchText = ref('');
     const getMostSearched = async () => {
         let res = [
             { id: 1, name: 'Bài 1'},
@@ -13,6 +14,7 @@ import { onMounted } from "vue";
     }
 
     const onSearchChange = (search) => {
+        console.log(searchText.value);
         console.log(search);
     }
     onMounted(getMostSearched);
@@ -22,7 +24,7 @@ import { onMounted } from "vue";
         <div class="top-header">
             <div class="container">
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-3 pointer">
                         <img :src="logo" alt="logo">
                     </div>
                     <div class="col-6">
@@ -36,7 +38,8 @@ import { onMounted } from "vue";
                                         type="text"
                                         class="w-100"
                                         @focus="onFocusSeachText"
-                                        @blur="onBlurSearch">
+                                        @blur="onBlurSearch"
+                                        placeholder="nhập bài hát, video, tên nghệ sĩ mà bạn muốn tìm">
                                     <div v-if="isSearchModalDisplay && !searchText" class="most-search w-100">
                                         <div class="">Bài hát tìm kiếm nhiều nhất</div>
                                         <ul>
@@ -56,8 +59,15 @@ import { onMounted } from "vue";
                                 </div>
                             </div>
                             <div class="col-2">
-                                <div class="history">
-                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                <div class="history relative">
+                                    <i class="fa-solid fa-clock-rotate-left pointer" @click="isDisplayHistory = true"></i>
+                                    <div v-if="isDisplayHistory" class="absolute history-box p-2">
+                                        <div class="d-flex justify-content-between pointer">
+                                            <div class="history-title">Bài hát vừa nghe</div>
+                                            <i class="fa-solid fa-xmark" @click="isDisplayHistory = false"></i>
+                                        </div>
+                                        <div class="history-content"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -66,76 +76,161 @@ import { onMounted } from "vue";
                 </div>
             </div>
         </div>
-        <div class="bot-header relative">
+        <div class="bot-header relative" @mouseleave="isDisplayMore = false">
             <div class="container">
-                <div class="row align-items-center justify-content-between relatvie">
+                <div class="row justify-content-between relatvie">
                     <div class="col col-md-2 col-lg p-2 item">
                         <a class="text-nowrap" href="#">Xếp hạng</a>
-                        <div class="hover w-100 p-2">
-                            <div>
+                        <div class="list-item w-100 p-2">
+                            <div class="mb-2 ms-2">
                                 <a href="#">BXH Hôm nay</a>
                             </div>
-                            <div>
+                            <div class="mb-2 ms-2">
                                 <a href="#">BXH Tuần này</a>
                             </div>
-                            <div>
+                            <div class="mb-2 ms-2">
                                 <a href="#">BXH Năm nay</a>
                             </div>
-                            <div>
+                            <div class="mb-2 ms-2">
                                 <a href="#">BXH Năm 2021</a>
                             </div>
                         </div>
                     </div>
                     <div class="col col-md-2 col-lg p-2 item">
                         <a class="text-nowrap" href="">Video clip</a>
-                        <div class="hover w-100 p-2">
-                            1234
+                        <div class="list-item w-100 p-2">
+                            <div class="mb-2 ms-2">
+                                <a href="#">Video Việt Nam</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Video US-UK</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Video Hoa</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Video Hàn</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Video Nhật</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Video Hài</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Video Live</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Video Khác</a>
+                            </div>
                         </div>
                     </div>
                     <div class="col col-md-2 col-lg p-2 item">
                         <a class="text-nowrap" href="">Việt Nam</a>
-                        <div class="hover w-100 p-2">
-                            1234
+                        <div class="list-item w-100 p-2">
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Pop, Rock</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Rap, Hiphop</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Dance, Remix</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Truyền thống</a>
+                            </div>
                         </div>
                     </div>
                     <div class="col col-md-2 col-lg p-2 item">
                         <a class="text-nowrap" href="">US-UK</a>
-                        <div class="hover w-100 p-2">
-                            1234
+                        <div class="list-item w-100 p-2">
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Pop, Rock</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Rap, Hiphop</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Dance, Remix</a>
+                            </div>
                         </div>
                     </div>
                     <div class="col col-md-2 col-lg p-2 item">
                         <a class="text-nowrap" href="">Nhạc Hoa</a>
-                        <div class="hover w-100 p-2">
-                            1234
+                        <div class="list-item w-100 p-2">
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Pop, Rock</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Rap, Hiphop</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Dance, Remix</a>
+                            </div>
                         </div>
                     </div>
                     <div class="col col-md-2 col-lg p-2 item">
                         <a class="text-nowrap" href="">Nhạc Hàn</a>
-                        <div class="hover w-100 p-2">
-                            1234
+                        <div class="list-item w-100 p-2">
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Pop, Rock</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Rap, Hiphop</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Dance, Remix</a>
+                            </div>
                         </div>
                     </div>
                     <div class="col col-md-2 col-lg p-2 item">
                         <a class="text-nowrap" href="">Nhạc Nhật</a>
-                        <div class="hover w-100 p-2">
-                            1234
+                        <div class="list-item w-100 p-2">
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Pop, Rock</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Rap, Hiphop</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Dance, Remix</a>
+                            </div>
                         </div>
                     </div>
                     <div class="col col-md-2 col-lg p-2 item">
                         <a class="text-nowrap" href="">Nhạc Pháp</a>
-                        <div class="hover w-100 p-2">
-                            1234
+                        <div class="list-item w-100 p-2">
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Pop, Rock</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Rap, Hiphop</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Dance, Remix</a>
+                            </div>
                         </div>
                     </div>
                     <div class="col col-md-2 col-lg p-2 item">
                         <a class="text-nowrap" href="">Nước khác</a>
-                        <div class="hover w-100 p-2">
-                            1234
+                        <div class="list-item w-100 p-2">
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Pop, Rock</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Rap, Hiphop</a>
+                            </div>
+                            <div class="mb-2 ms-2">
+                                <a href="#">Nhạc Dance, Remix</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col col-md-2 col-lg p-2 item text-center">...</div>
-                    <div class="col col-md-2 col-lg p-2 item d-flex justify-content-end align-items-center">
+                    <div v-if="!isDisplayMore" class="col col-md-2 col-lg p-2 item justify-content-center pointer" @click="onOpenMore">...</div>
+                    <div v-else class="col col-md-2 col-lg p-2 item justify-content-center" @click="onCloseMore">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                    <div class="col col-md-2 col-lg p-2 item justify-content-end">
                         <div class="d-flex align-items-center justify-content-center upload">
                             <i class="fa-solid fa-cloud-arrow-up"></i>
                             <div class="ms-2">Upload</div>
@@ -143,8 +238,206 @@ import { onMounted } from "vue";
                     </div>
                 </div>
             </div>
-            <div class="absolute w-100">
-                123
+            <div v-if="isDisplayMore" class="absolute w-100 more p-3" ref="more">
+                <div class="container mt-3">
+                    <div class="row">
+                        <div class="col-2">
+                            <div class="box-item">
+                                <div class="title-box ps-3 mb-3">Xếp hạng</div>
+                                <div class="content-box">
+                                    <div class="">
+                                        <a href="#">BXH Hôm nay</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">BXH Tuần này</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">BXH Năm nay</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">BXH Năm 2021</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="box-item">
+                                <div class="title-box ps-3 mb-3">Video clip</div>
+                                <div class="content-box">
+                                    <div class="">
+                                        <a href="#">Video Việt Nam</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Video US-UK</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Video Hoa</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Video Hàn</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Video Nhật</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Video Hài</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Video Live</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Video Khác</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="box-item">
+                                <div class="title-box ps-3 mb-3">Việt Nam</div>
+                                <div class="content-box">
+                                    <div class="">
+                                        <a href="#">Nhạc Pop, Rock</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Rap, Hiphop</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Dance, Remix</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Truyền thống</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="box-item">
+                                <div class="title-box ps-3 mb-3">US-UK</div>
+                                <div class="content-box">
+                                    <div class="">
+                                        <a href="#">Nhạc Pop, Rock</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Rap, Hiphop</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Dance, Remix</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="box-item">
+                                <div class="title-box ps-3 mb-3">Nhạc Hoa</div>
+                                <div class="content-box">
+                                    <div class="">
+                                        <a href="#">Nhạc Pop, Rock</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Rap, Hiphop</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Dance, Remix</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="box-item">
+                                <div class="title-box ps-3 mb-3">Nhạc Hàn</div>
+                                <div class="content-box">
+                                    <div class="">
+                                        <a href="#">Nhạc Pop, Rock</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Rap, Hiphop</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Dance, Remix</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-2">
+                            <div class="box-item">
+                                <div class="title-box ps-3 mb-3">Nhạc Nhật</div>
+                                <div class="content-box">
+                                    <div class="">
+                                        <a href="#">Nhạc Pop, Rock</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Rap, Hiphop</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Dance, Remix</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="box-item">
+                                <div class="title-box ps-3 mb-3">Nước Pháp</div>
+                                <div class="content-box">
+                                    <div class="">
+                                        <a href="#">Nhạc Pop, Rock</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Rap, Hiphop</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Dance, Remix</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="box-item">
+                                <div class="title-box ps-3 mb-3">Nước khác</div>
+                                <div class="content-box">
+                                    <div class="">
+                                        <a href="#">Nhạc Pop, Rock</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Rap, Hiphop</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Nhạc Dance, Remix</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="box-item">
+                                <div class="title-box ps-3 mb-3">Playback</div>
+                                <div class="content-box">
+                                    <div class="">
+                                        <a href="#">Playback Việt Nam</a>
+                                    </div>
+                                    </div><div class="">
+                                        <a href="#">Playback US-UK</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Playback Hàn</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Playback Nhật</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Playback Hoa</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Playback Pháp</a>
+                                    </div>
+                                    <div class="">
+                                        <a href="#">Playback Nước khác</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -154,8 +447,9 @@ export default {
     data() {
         return {
             logo: "https://data.chiasenhac.com/imgs/logo-web-official.png",
-            searchText: '',
             isSearchModalDisplay: false,
+            isDisplayMore: false,
+            isDisplayHistory: false,
         }
     },
 
@@ -165,13 +459,20 @@ export default {
         },
         
         onFocusSeachText() {
-            console.log(11);
             this.isSearchModalDisplay = true;
         },
 
         onBlurSearch() {
             this.isSearchModalDisplay = false;
-        }
+        },
+
+        onCloseMore() {
+            this.isDisplayMore = false;
+        },
+
+        onOpenMore() {
+            this.isDisplayMore = true;
+        },
     },
 }
 </script>
