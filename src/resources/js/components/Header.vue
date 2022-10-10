@@ -1,23 +1,54 @@
 <script setup>
 import {ref} from 'vue';
 import { onMounted } from "vue";
+import CONSTANT from  '../app/constants.js';
     const mostSearched = ref([]);
+    const searchData = ref({});
     const searchText = ref('');
     const getMostSearched = async () => {
         let res = [
-            { id: 1, name: 'Bài 1'},
-            { id: 2, name: 'Bài 2'},
-            { id: 3, name: 'Bài 3'},
-            { id: 4, name: 'Bài 4'},
+            { id: 1, name: 'Em nên dừng lại', singer: 'Khang Việt', type: 1},
+            { id: 2, name: 'Chưa quên người yêu cũ', singer: 'Hà Nhi', type: 2},
+            { id: 3, name: 'Điều buồn nhất khi yêu', singer: 'Hòa Minzy', type: 1},
+            { id: 4, name: 'Bên trên tầng lầu', singer: 'Tăng Duy Tân', type: 3},
         ]
         mostSearched.value = res
+    };
+
+    const getSearchChange = async () => {
+        const res = {
+            'song' : [
+                { id: 2, name: 'Chưa quên người yêu cũ', singer: 'Hà Nhi', type: 2, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
+                { id: 3, name: 'Điều buồn nhất khi yêu', singer: 'Hòa Minzy', type: 1, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
+                { id: 4, name: 'Bên trên tầng lầu', singer: 'Tăng Duy Tân', type: 3, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
+            ],
+            'singer': [
+                { id: 2, name: 'Chưa quên người yêu cũ', singer: 'Hà Nhi', type: 2, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
+                { id: 3, name: 'Điều buồn nhất khi yêu', singer: 'Hòa Minzy', type: 1, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
+                { id: 4, name: 'Bên trên tầng lầu', singer: 'Tăng Duy Tân', type: 3, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
+            ],
+            'album': [
+                { id: 2, name: 'Chưa quên người yêu cũ', singer: 'Hà Nhi', type: 2, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
+                { id: 3, name: 'Điều buồn nhất khi yêu', singer: 'Hòa Minzy', type: 1, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
+                { id: 4, name: 'Bên trên tầng lầu', singer: 'Tăng Duy Tân', type: 3, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
+            ],
+            'video': [
+                { id: 2, name: 'Chưa quên người yêu cũ', singer: 'Hà Nhi', type: 4, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
+                { id: 3, name: 'Điều buồn nhất khi yêu', singer: 'Hòa Minzy', type: 4, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
+                { id: 4, name: 'Bên trên tầng lầu', singer: 'Tăng Duy Tân', type: 4, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
+            ]
+        }
+
+        searchData.value = res;
     }
+
+    onMounted(getMostSearched(), getSearchChange());
 
     const onSearchChange = (search) => {
         console.log(searchText.value);
         console.log(search);
     }
-    onMounted(getMostSearched);
+
 </script>
 <template>
     <div class="header">
@@ -41,38 +72,117 @@ import { onMounted } from "vue";
                                         @blur="onBlurSearch"
                                         placeholder="nhập bài hát, video, tên nghệ sĩ mà bạn muốn tìm">
                                     <div v-if="isSearchModalDisplay && !searchText" class="most-search w-100">
-                                        <div class="">Bài hát tìm kiếm nhiều nhất</div>
-                                        <ul>
-                                            <li v-for="item in mostSearched" :key="item.id">{{ item.name}}</li>
+                                        <div class="most-search-title p-3">Bài hát tìm kiếm nhiều nhất</div>
+                                        <ul class="list-item-search ">
+                                            <li v-for="item in mostSearched" :key="item.id" class="item-search ps-3 mb-2">
+                                                <a href="#">
+                                                    <div class="item-search-name">{{ item.name}}</div>
+                                                    <div class="item-search-singer">{{ item.singer}}</div>
+                                                    <div class="item-search-type" :style="{'color': CONSTANT.TYPE[item.type].color}">{{ CONSTANT.TYPE[item.type].name }}</div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <hr>
+                                        <div class="most-search-title ps-3">Lịch sử tìm kiếm của bạn</div>
+                                        <ul class="list-item-search mt-2">
+                                            <li v-for="item in mostSearched" :key="item.id" class="item-search ps-3 mb-1">
+                                                <div class="item-search-name"><a href="#">{{ item.name}}</a></div>
+                                            </li>
                                         </ul>
                                     </div>
                                     <div v-if="isSearchModalDisplay && searchText" class="suggestion w-100">
                                         <div v-if="true" class="suggestion-content d-flex flex-column">
-                                            <div>View All</div>
-                                            <div class="song-suggestion">Bài hát</div>
-                                            <div class="singer-suggestion">Ca sĩ</div>
-                                            <div class="album-suggestion">Album</div>
-                                            <div class="video-suggestion">Video</div>
+                                            <div class="view-all d-flex justify-content-end pe-2"><a href="#">View All</a></div>
+                                            <div class="">
+                                                <div class="suggestion-title ps-3 mb-2">Bài hát</div>
+                                                <ul class="mb-2">
+                                                    <li v-for="(item, index) in searchData.song" :key="index" class="song-suggestion ps-3 mb-2">
+                                                        <a href="#">
+                                                            <div class="item-search-name" v-html="getSearchContent(item.name)"></div>
+                                                            <div class="item-search-singer">{{ item.singer}}</div>
+                                                            <div class="item-search-type" :style="{'color': CONSTANT.TYPE[item.type].color}">{{ CONSTANT.TYPE[item.type].name }}</div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                                <hr>
+                                                <div class="suggestion-title ps-3 mb-2">Nghệ sĩ</div>
+                                                <ul class="mb-2">
+                                                    <li v-for="(item, index) in searchData.singer" :key="index" class="singer-suggestion ps-3 mb-2">
+                                                        <a href="#" class="d-flex align-items-center">
+                                                            <div class="item-thumb">
+                                                                <img :src="item.thumb" alt="">
+                                                            </div>
+                                                            <div class="item-name ms-2" v-html="getSearchContent(item.singer)"></div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                                <hr>
+                                                <div class="suggestion-title ps-3 mb-2">Album</div>
+                                                <ul class="">
+                                                    <li v-for="(item, index) in searchData.album" :key="index" class="album-suggestion ps-3 mb-2">
+                                                        <a href="#" class="d-flex align-items-center">
+                                                            <div class="item-thumb">
+                                                                <img :src="item.thumb" alt="">
+                                                            </div>
+                                                            <div class="ms-2">
+                                                                <div class="" v-html="getSearchContent(item.album)"></div>
+                                                                <div class="">{{ item.singer}}</div>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                                <hr>
+                                                <div class="suggestion-title ps-3 mb-2">Video</div>
+                                                <ul class="mb-2">
+                                                    <li v-for="(item, index) in searchData.video" :key="index" class="video-suggestion ps-3 mb-2">
+                                                        <a href="#" class="d-flex align-items-center">
+                                                            <div class="item-thumb relative">
+                                                                <img :src="item.thumb" alt="">
+                                                                <div class="absolute d-flex align-items-center item-thumb-time ps-1 pe-1">
+                                                                    <div class=""><i class="fa-regular fa-clock"></i></div>
+                                                                    <div class="ms-1">{{ item.time}}</div>
+                                                                </div>
+                                                                <div class="absolute play">
+                                                                    <i class="fa-regular fa-circle-play"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="ms-2">
+                                                                <div class="item-name" v-html="getSearchContent(item.name)"></div>
+                                                                <div class="item-author">{{ item.singer}}</div>
+                                                                <div class="item-type" :style="{'color': CONSTANT.TYPE[item.type].color}">{{ CONSTANT.TYPE[item.type].name }}</div>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div v-else>No content</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-2">
-                                <div class="history relative">
+                                <div class="history relative w-100" ref="history">
                                     <i class="fa-solid fa-clock-rotate-left pointer" @click="isDisplayHistory = true"></i>
-                                    <div v-if="isDisplayHistory" class="absolute history-box p-2">
-                                        <div class="d-flex justify-content-between pointer">
-                                            <div class="history-title">Bài hát vừa nghe</div>
-                                            <i class="fa-solid fa-xmark" @click="isDisplayHistory = false"></i>
+                                    <div v-if="isDisplayHistory" class="absolute history-box p-2" :style="{'--width': historyWidth }">
+                                        <div class="history-title d-flex justify-content-between align-items-center mb-2">
+                                            <div class="">Bài hát vừa nghe</div>
+                                            <div class="pointer"><i class="fa-solid fa-xmark" @click="isDisplayHistory = false"></i></div>
                                         </div>
-                                        <div class="history-content"></div>
+                                        <div class="history-content">
+                                            <ul>
+                                                <li v-for="(item, index) in mostSearched" :key="item.id" class="history-item p-2">
+                                                    <a href="#">
+                                                        <div class="history-item-content">{{ (index + 1) + '. '  + item.name + ' - ' + item.singer}}</div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-3 d-flex justify-content-end align-items-center" @click="onLog">User</div>
+                    <div class="col-3 d-flex justify-content-end align-items-center" @click="onLog">Đăng nhập / Đăng ký</div>
                 </div>
             </div>
         </div>
@@ -450,12 +560,23 @@ export default {
             isSearchModalDisplay: false,
             isDisplayMore: false,
             isDisplayHistory: false,
+            historyWidth: '16px',
         }
+    },
+    mounted() {
+        this.init();
+        window.addEventListener("resize", this.init);
+        console.log(this.searchData);
+    },
+    unmounted() {
+        window.removeEventListener("resize", this.init);
     },
 
     methods: {
+        init() {
+           this.historyWidth = (this.$refs.history.getBoundingClientRect().width - 16) + 'px';
+        },
         onLog() {
-            console.log(1);
         },
         
         onFocusSeachText() {
@@ -473,6 +594,23 @@ export default {
         onOpenMore() {
             this.isDisplayMore = true;
         },
+
+        getSearchContent(content) {
+            const textArr = content.split(this.searchText);
+            if (textArr) {
+                return textArr.join(`<span class="highlight">${this.searchText}</span>`);
+            }
+            return content
+        },
+
     },
 }
 </script>
+
+<style lang="scss">
+    .history-box {
+        &::before {
+            right: v-bind(historyWidth) !important;
+        }
+    }
+</style>
