@@ -566,7 +566,6 @@ export default {
     mounted() {
         this.init();
         window.addEventListener("resize", this.init);
-        console.log(this.searchData);
     },
     unmounted() {
         window.removeEventListener("resize", this.init);

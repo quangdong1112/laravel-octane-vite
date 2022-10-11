@@ -13,6 +13,11 @@
             @yield('content')
         </master>
     </div>
-    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/js/app/master.js'])
+    @vite([
+        'resources/sass/app.scss',
+        'resources/js/app.js',
+        'resources/js/app/master.js',
+        'resources/js/app/home.js',
+        ])
 </body>
 </html>
