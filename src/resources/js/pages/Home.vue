@@ -1,65 +1,47 @@
 <script setup>
-import {ref, onMounted} from 'vue';
-import { cloneDeep } from 'lodash';
-const newAlbum = ref([]);
-const getNewAlbum = async () => {
-    const res = [
-        { id: 1, name: 'Chưa quên người yêu cũ', singer: 'Hà Nhi', type: 2, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
-        { id: 2, name: 'Điều buồn nhất khi yêu', singer: 'Hòa Minzy', type: 1, thumb: 'https://data.chiasenhac.com/data/cover_thumb_200/171/170539.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
-        { id: 3, name: 'Bên trên tầng lầu', singer: 'Tăng Duy Tân', type: 3, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
-        { id: 4, name: 'Chưa quên người yêu cũ', singer: 'Hà Nhi', type: 2, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
-        { id: 5, name: 'Điều buồn nhất khi yêu', singer: 'Hòa Minzy', type: 1, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
-        { id: 6, name: 'Bên trên tầng lầu', singer: 'Tăng Duy Tân', type: 3, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
-        { id: 7, name: 'Chưa quên người yêu cũ', singer: 'Hà Nhi', type: 2, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
-        { id: 8, name: 'Điều buồn nhất khi yêu', singer: 'Hòa Minzy', type: 1, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
-        { id: 9, name: 'Bên trên tầng lầu', singer: 'Tăng Duy Tân', type: 3, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
-        { id: 10, name: 'Bên trên tầng lầu', singer: 'Tăng Duy Tân', type: 3, thumb: 'https://data.chiasenhac.com/imgs/no_cover.jpg', album: 'Album 1', link: 'dongnq.net', time: '04:50'},
-    ];
-    newAlbum.value = res;
-}
-const slideShowData = ref([
-    { name: 'BXH Việt Nam', actived: false, image: 'https://data.chiasenhac.com/imgs/bxh/BXHNhacVietNam_245x140.png'},
-    { name: 'BXH Việt Video', actived: false, image: 'https://data.chiasenhac.com/imgs/bxh/BXHVideo_245x140.png'},
-    { name: 'BXH US - UK', actived: false, image: 'https://data.chiasenhac.com/imgs/bxh/BXHNhacUs-UK_245x140.png'},
-    { name: 'BXH Nhạc Hàn', actived: false, image: 'https://data.chiasenhac.com/imgs/bxh/BXHNhacHan_245x140.png'},
-    { name: 'BXH Nhạc Nhật', actived: false, image: 'https://data.chiasenhac.com/imgs/bxh/BXHNhacNhat_245x140.png'},
-    { name: 'BXH Nhạc Hoa', actived: false, image: 'https://data.chiasenhac.com/imgs/bxh/BXHNhacHoa_245x140.png'},
-    { name: 'BXH Nước khác', actived: false, image: 'https://data.chiasenhac.com/imgs/bxh/BXHNhacNuocKhac_245x140.png'},
-    { name: 'BXH Beat Playback', actived: false, image: 'https://data.chiasenhac.com/imgs/bxh/BXHBeat_245x140.png'},])
-const slideIndexActived = ref([0, 1 , 2]);
+import {ref, onMounted, computed} from 'vue';
+import { cloneDeep, sortBy } from 'lodash';
+import useHome from '../composables/home.js'
+
+const {getNewAlbum, slideShowData,
+        newAlbum, onRightClicked, onLeftClicked,
+        getBxhAlbum, bxhAlbum, getListSinger, listSinger}  = useHome();
 const getItemSlideActived = () => {
-    for (const [i, item] of slideShowData.value.entries()) {
-        if (slideIndexActived.value.includes(i)) {
-            item.actived = true;
-        } else {
-            item.actived = false;
-        }
-    }
+    setInterval(() => {
+        right.value.click()
+    }, 3000)
 }
-
-onMounted(getNewAlbum(), getItemSlideActived())
-
-const onLeftClicked = () => {
-    const res = cloneDeep(slideIndexActived)
-    slideIndexActived.value = res.value.map(item => {
-        item -= 1;
-        if (item < 0) {
-            item = (slideShowData.value.length - 1)
+const listItem = computed(() => {
+    slideShowData.value = slideShowData.value.map(item => {
+        if ( item.sort < 3) {
+            item.actived = true
         }
+        else {
+            item.actived = false
+
+        }
+
         return item;
     })
-    getItemSlideActived();
-};
-const onRightClicked = () => {
-    const res = cloneDeep(slideIndexActived)
-    slideIndexActived.value = res.value.map(item => {
-        item += 1;
-        if (item > (slideShowData.value.length - 1)) {
-            item = 0
-        }
-        return item;
-    })
-    getItemSlideActived();
+    return slideShowData.value = sortBy(slideShowData.value, "sort");
+})
+
+const right = ref(null)
+
+onMounted(getNewAlbum(), getItemSlideActived(), getBxhAlbum('vn'), getListSinger())
+
+const typeBxh = ref([
+    { id: 'vn', name: 'Việt Nam', actived: true},
+    { id: 'usuk', name: 'US-UK', actived: false},
+    { id: 'kpop', name: 'K POP', actived: false},
+    { id: 'jpop', name: 'J POP', actived: false},
+])
+
+const changeBxh = (index, id) => {
+    for (const [i,item] of typeBxh.value.entries()) {
+        item.actived = i == index;
+    }
+    getBxhAlbum(id)
 }
 </script>
 <template>
@@ -85,8 +67,8 @@ const onRightClicked = () => {
                     </div>
                 </div>
                 <div class="row slide-show">
-                    <div class="col-4 item" v-for="(item, index) in slideShowData" :key="index" :class="{actived: item.actived}">
-                        <a href="#">
+                    <div class="col-4 item" v-for="(item, index) in listItem" :key="index">
+                        <a v-show="item.actived" href="#">
                             <img :src="item.image" alt="">
                             <div class="item-name">{{ item.name}}</div>
                         </a>
@@ -94,12 +76,63 @@ const onRightClicked = () => {
                     <div class="arrow-action">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="left pointer" @click="onLeftClicked"><i class="fa-solid fa-chevron-left"></i></div>
-                            <div class="right pointer" @click="onRightClicked"><i class="fa-solid fa-chevron-right"></i></div>
+                            <div class="right pointer" @click="onRightClicked" ref="right"><i class="fa-solid fa-chevron-right"></i></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-lg-3">2</div>
+            <div class="sidebar col-md-3 col-lg-3">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="title">Bảng xếp hạng</div>
+                    <div class="all-view"><a href="#">Xem tất cả</a></div>
+                </div> 
+                <div class="sidebar-bxh">
+                    <div class="d-flex justify-content-between">
+                        <div class="bxh-type pointer"
+                            v-for="(item, index) in typeBxh"
+                            :key="index"
+                            :class="{actived: item.actived}"
+                            @click="changeBxh(index, item.id)">{{ item.name}}</div>
+                    </div>
+                    <hr>
+                    <div v-for="(item, index) in bxhAlbum" :key="index" class="">
+                        <div v-if="index == 0" class="d-flex align-items-start">
+                            <div class="bxh-thumb-first me-3">
+                                <img :src="item.thumb" alt="">
+                                <div class="top-1">{{ index + 1}}</div>
+                            </div>
+                            <div class="bxh-content d-flex flex-column justify-content-between w-100">
+                                <div class="name">{{ item.name}}</div>
+                                <div class="d-flex justify-content-between discription">
+                                    <div class="">{{ item.singer}}</div>
+                                    <div class="">{{ item.view}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="d-flex align-items-center w-100">
+                            <div class="bxh-item me-2 text-center" :style="styleBxh(index)">{{ index + 1}}</div>
+                            <div class="bxh-thumb me-3">
+                                <img :src="item.thumb" alt="">
+                            </div>
+                            <div class="bxh-content d-flex flex-column justify-content-between w-100">
+                                <div class="name">{{ item.name}}</div>
+                                <div class="d-flex justify-content-between discription">
+                                    <div class="">{{ item.singer}}</div>
+                                    <div class="">{{ item.view}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                <div class="singer-favorite row">
+                    <div v-for="(item, index) in listSinger" :key="index" class="col-4">
+                        <div class="thumb-singer mb-3">
+                            <img :src="item.avatar" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -111,7 +144,17 @@ export default {
         }
     },
     methods: {
-      
+        styleBxh(index) {
+            if (index > 2) return;
+            if (index == 1) {
+                return {
+                    'color': 'blue'
+                }
+            }
+            return {
+                'color': 'green'
+            }
+        }
     },
 }
 </script>
