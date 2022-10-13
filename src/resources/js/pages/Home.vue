@@ -85,7 +85,7 @@ const changeBxh = (index, id) => {
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="title">Bảng xếp hạng</div>
                     <div class="all-view"><a href="#">Xem tất cả</a></div>
-                </div> 
+                </div>
                 <div class="sidebar-bxh">
                     <div class="d-flex justify-content-between">
                         <div class="bxh-type pointer"
@@ -128,7 +128,7 @@ const changeBxh = (index, id) => {
                 <div class="singer-favorite row">
                     <div v-for="(item, index) in listSinger" :key="index" class="col-4">
                         <div class="thumb-singer mb-3">
-                            <img :src="item.avatar" alt="">
+                            <img :src="item.avatar" alt="avatar">
                         </div>
                     </div>
                 </div>
