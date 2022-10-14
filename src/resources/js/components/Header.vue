@@ -188,8 +188,8 @@ import CONSTANT from  '../app/constants.js';
         </div>
         <div class="bot-header relative" @mouseleave="isDisplayMore = false">
             <div class="container">
-                <div class="row justify-content-between relatvie">
-                    <div class="col col-md-2 col-lg p-2 item">
+                <div class="row justify-content-between relatvie row-cols-11">
+                    <div class="col p-2 item">
                         <a class="text-nowrap" href="#">Xếp hạng</a>
                         <div class="list-item w-100 p-2">
                             <div class="mb-2 ms-2">
@@ -206,7 +206,7 @@ import CONSTANT from  '../app/constants.js';
                             </div>
                         </div>
                     </div>
-                    <div class="col col-md-2 col-lg p-2 item">
+                    <div class="col p-2 item">
                         <a class="text-nowrap" href="">Video clip</a>
                         <div class="list-item w-100 p-2">
                             <div class="mb-2 ms-2">
@@ -235,7 +235,7 @@ import CONSTANT from  '../app/constants.js';
                             </div>
                         </div>
                     </div>
-                    <div class="col col-md-2 col-lg p-2 item">
+                    <div class="col p-2 item">
                         <a class="text-nowrap" href="">Việt Nam</a>
                         <div class="list-item w-100 p-2">
                             <div class="mb-2 ms-2">
@@ -252,7 +252,7 @@ import CONSTANT from  '../app/constants.js';
                             </div>
                         </div>
                     </div>
-                    <div class="col col-md-2 col-lg p-2 item">
+                    <div class="col p-2 item">
                         <a class="text-nowrap" href="">US-UK</a>
                         <div class="list-item w-100 p-2">
                             <div class="mb-2 ms-2">
@@ -266,7 +266,7 @@ import CONSTANT from  '../app/constants.js';
                             </div>
                         </div>
                     </div>
-                    <div class="col col-md-2 col-lg p-2 item">
+                    <div class="col p-2 item">
                         <a class="text-nowrap" href="">Nhạc Hoa</a>
                         <div class="list-item w-100 p-2">
                             <div class="mb-2 ms-2">
@@ -280,7 +280,7 @@ import CONSTANT from  '../app/constants.js';
                             </div>
                         </div>
                     </div>
-                    <div class="col col-md-2 col-lg p-2 item">
+                    <div class="col p-2 item">
                         <a class="text-nowrap" href="">Nhạc Hàn</a>
                         <div class="list-item w-100 p-2">
                             <div class="mb-2 ms-2">
@@ -294,7 +294,7 @@ import CONSTANT from  '../app/constants.js';
                             </div>
                         </div>
                     </div>
-                    <div class="col col-md-2 col-lg p-2 item">
+                    <div class="col p-2 item">
                         <a class="text-nowrap" href="">Nhạc Nhật</a>
                         <div class="list-item w-100 p-2">
                             <div class="mb-2 ms-2">
@@ -308,7 +308,7 @@ import CONSTANT from  '../app/constants.js';
                             </div>
                         </div>
                     </div>
-                    <div class="col col-md-2 col-lg p-2 item">
+                    <div class="col p-2 item">
                         <a class="text-nowrap" href="">Nhạc Pháp</a>
                         <div class="list-item w-100 p-2">
                             <div class="mb-2 ms-2">
@@ -322,7 +322,7 @@ import CONSTANT from  '../app/constants.js';
                             </div>
                         </div>
                     </div>
-                    <div class="col col-md-2 col-lg p-2 item">
+                    <div class="col p-2 item">
                         <a class="text-nowrap" href="">Nước khác</a>
                         <div class="list-item w-100 p-2">
                             <div class="mb-2 ms-2">
@@ -336,11 +336,11 @@ import CONSTANT from  '../app/constants.js';
                             </div>
                         </div>
                     </div>
-                    <div v-if="!isDisplayMore" class="col col-md-2 col-lg p-2 item justify-content-center pointer" @click="onOpenMore">...</div>
-                    <div v-else class="col col-md-2 col-lg p-2 item justify-content-center" @click="onCloseMore">
+                    <div v-if="!isDisplayMore" class="col p-2 item justify-content-center pointer" @click="onOpenMore">...</div>
+                    <div v-else class="col p-2 item justify-content-center" @click="onCloseMore">
                         <i class="fa-solid fa-xmark"></i>
                     </div>
-                    <div class="col col-md-2 col-lg p-2 item justify-content-end">
+                    <div class="col p-2 item justify-content-end">
                         <div class="d-flex align-items-center justify-content-center upload">
                             <i class="fa-solid fa-cloud-arrow-up"></i>
                             <div class="ms-2">Upload</div>
@@ -577,7 +577,7 @@ export default {
         },
         onLog() {
         },
-        
+
         onFocusSeachText() {
             this.isSearchModalDisplay = true;
         },

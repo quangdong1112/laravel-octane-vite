@@ -1,0 +1,18 @@
+.footer {
+    background-color: #282828;
+    font-size: 14px;
+    .title {
+        color: white;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    a {
+        color: #a9a9a9;
+        text-decoration: none;
+
+        &:hover {
+            color: red;
+        }
+    }
+}

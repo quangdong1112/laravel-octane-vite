@@ -1,11 +1,12 @@
 <script setup>
 import {ref, onMounted, computed} from 'vue';
-import { cloneDeep, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 import useHome from '../composables/home.js'
+import sidebar from '../components/Sidebar.vue';
+import CONSTANT from  '../app/constants.js';
 
-const {getNewAlbum, slideShowData,
-        newAlbum, onRightClicked, onLeftClicked,
-        getBxhAlbum, bxhAlbum, getListSinger, listSinger}  = useHome();
+
+const {getNewAlbum, slideShowData, newAlbum, newVideo, onRightClicked, onLeftClicked}  = useHome();
 const getItemSlideActived = () => {
     setInterval(() => {
         right.value.click()
@@ -28,21 +29,8 @@ const listItem = computed(() => {
 
 const right = ref(null)
 
-onMounted(getNewAlbum(), getItemSlideActived(), getBxhAlbum('vn'), getListSinger())
+onMounted(getNewAlbum(), getItemSlideActived())
 
-const typeBxh = ref([
-    { id: 'vn', name: 'Việt Nam', actived: true},
-    { id: 'usuk', name: 'US-UK', actived: false},
-    { id: 'kpop', name: 'K POP', actived: false},
-    { id: 'jpop', name: 'J POP', actived: false},
-])
-
-const changeBxh = (index, id) => {
-    for (const [i,item] of typeBxh.value.entries()) {
-        item.actived = i == index;
-    }
-    getBxhAlbum(id)
-}
 </script>
 <template>
     <div class="container home mt-3">
@@ -80,59 +68,102 @@ const changeBxh = (index, id) => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="sidebar col-md-3 col-lg-3">
+                <div class="mb-4"></div>
+                <div class="row row-cols-2">
+                    <div class="col share">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <div class="title">Bài hát mới chia sẻ</div>
+                            <div class="all-view"><a href="#">Xem tất cả</a></div>
+                        </div>
+
+                        <div class="share-item" v-for="(item, index) in newAlbum" :key="index">
+                            <div class="d-flex align-items-center">
+                                <div class="thumb-share me-2">
+                                    <img :src="item.thumb" alt="">
+                                    <div class="play">
+                                        <i class="fa-regular fa-circle-play"></i>
+                                    </div>
+                                </div>
+                                <div class="share-content d-flex align-items-center justify-content-between w-100">
+                                    <div class="info">
+                                        <div class="name"><a href="#">{{item.name}}</a></div>
+                                        <div class="singer"><a href="#">{{item.singer}}</a></div>
+                                        <div class="type" :style="{'color': CONSTANT.TYPE[item.type].color}">{{ CONSTANT.TYPE[item.type].name }}</div>
+                                    </div>
+                                    <div class="info-view text-end">
+                                        <div class="start">
+                                            <div class=""><i class="fa-solid fa-clock me-1"></i>{{'1 thang'}}</div>
+                                        </div>
+                                        <div class="view"><i class="fa-solid fa-headphones me-1"></i>{{ item.view}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-favorite">
+                                <a href="#"><i class="fa-solid fa-headphones me-2"></i></a>
+                                <a href="#"><i class="fa-solid fa-heart-circle-plus me-2"></i></a>
+                                <a href="#"><i class="fa-solid fa-share-nodes me-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col share">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <div class="title">Download nhiều nhất</div>
+                            <div class="all-view"><a href="#">Xem tất cả</a></div>
+                        </div>
+                        <div class="share-item" v-for="(item, index) in newAlbum" :key="index">
+                            <div class="d-flex align-items-center">
+                                <div class="thumb-share me-2">
+                                    <img :src="item.thumb" alt="">
+                                    <div class="play">
+                                        <i class="fa-regular fa-circle-play"></i>
+                                    </div>
+                                </div>
+                                <div class="share-content d-flex align-items-center justify-content-between w-100">
+                                    <div class="info">
+                                        <div class="name"><a href="#">{{item.name}}</a></div>
+                                        <div class="singer"><a href="#">{{item.singer}}</a></div>
+                                        <div class="type" :style="{'color': CONSTANT.TYPE[item.type].color}">{{ CONSTANT.TYPE[item.type].name }}</div>
+                                    </div>
+                                    <div class="info-view text-end">
+                                        <div class="start">
+                                            <div class=""><i class="fa-solid fa-clock me-1"></i>{{'2 thang'}}</div>
+                                        </div>
+                                        <div class="view"><i class="fa-solid fa-headphones me-1"></i>{{ item.view}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-favorite">
+                                <a href="#"><i class="fa-solid fa-headphones me-2"></i></a>
+                                <a href="#"><i class="fa-solid fa-heart-circle-plus me-2"></i></a>
+                                <a href="#"><i class="fa-solid fa-share-nodes me-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4"></div>
                 <div class="d-flex align-items-center justify-content-between mb-2">
-                    <div class="title">Bảng xếp hạng</div>
+                    <div class="title">Video mới</div>
                     <div class="all-view"><a href="#">Xem tất cả</a></div>
                 </div>
-                <div class="sidebar-bxh">
-                    <div class="d-flex justify-content-between">
-                        <div class="bxh-type pointer"
-                            v-for="(item, index) in typeBxh"
-                            :key="index"
-                            :class="{actived: item.actived}"
-                            @click="changeBxh(index, item.id)">{{ item.name}}</div>
-                    </div>
-                    <hr>
-                    <div v-for="(item, index) in bxhAlbum" :key="index" class="">
-                        <div v-if="index == 0" class="d-flex align-items-start">
-                            <div class="bxh-thumb-first me-3">
-                                <img :src="item.thumb" alt="">
-                                <div class="top-1">{{ index + 1}}</div>
+                <div class="row row-cols-4 video-new">
+                    <div class="col mb-3" v-for="(item, index) in newVideo" :key="index">
+                        <div class="thumb-video">
+                            <img :src="item.thumb" alt="">
+                            <div class="play"><i class="fa-regular fa-circle-play"></i></div>
+                            <div class="time">
+                                <div class="pe-1 ps-1"><i class="fa-regular fa-clock me-2"></i>{{ item.time}}</div>
                             </div>
-                            <div class="bxh-content d-flex flex-column justify-content-between w-100">
-                                <div class="name">{{ item.name}}</div>
-                                <div class="d-flex justify-content-between discription">
-                                    <div class="">{{ item.singer}}</div>
-                                    <div class="">{{ item.view}}</div>
-                                </div>
-                            </div>
+                            <div class="type pe-1 ps-1" :style="{'color': CONSTANT.TYPE[item.type].color}">{{ CONSTANT.TYPE[item.type].name }}</div>
                         </div>
-                        <div v-else class="d-flex align-items-center w-100">
-                            <div class="bxh-item me-2 text-center" :style="styleBxh(index)">{{ index + 1}}</div>
-                            <div class="bxh-thumb me-3">
-                                <img :src="item.thumb" alt="">
-                            </div>
-                            <div class="bxh-content d-flex flex-column justify-content-between w-100">
-                                <div class="name">{{ item.name}}</div>
-                                <div class="d-flex justify-content-between discription">
-                                    <div class="">{{ item.singer}}</div>
-                                    <div class="">{{ item.view}}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                    </div>
-                </div>
-                <div class="singer-favorite row">
-                    <div v-for="(item, index) in listSinger" :key="index" class="col-4">
-                        <div class="thumb-singer mb-3">
-                            <img :src="item.avatar" alt="avatar">
+                        <div class="video-content mt-3">
+                            <div class="video-name"><a href="#">{{ item.album}}</a></div>
+                            <div class="video-author"><a href="#">{{ item.singer}}</a></div>
                         </div>
                     </div>
                 </div>
+                <div class="mb-4"></div>
             </div>
+            <sidebar></sidebar>
         </div>
     </div>
 </template>
@@ -144,17 +175,7 @@ export default {
         }
     },
     methods: {
-        styleBxh(index) {
-            if (index > 2) return;
-            if (index == 1) {
-                return {
-                    'color': 'blue'
-                }
-            }
-            return {
-                'color': 'green'
-            }
-        }
+
     },
 }
 </script>

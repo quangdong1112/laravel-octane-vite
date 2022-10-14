@@ -12,6 +12,18 @@ services:
         working_dir: /var/www/html
         networks:
           - laravel
+    db:
+        image: postgres:13
+        ports:
+          - '5432:5432'
+        volumes:
+          - ./postgres-data:/var/lib/postgresql/data
+        environment:
+          - POSTGRES_USER=user
+          - POSTGRES_PASSWORD=resu
+          - POSTGRES_DB=db
+        networks:
+          - laravel
 networks:
     laravel:
 #        external: true
